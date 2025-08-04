@@ -1,0 +1,12 @@
+[general]
+cmd = "hyprland-launch"
+user = "mayla"
+
+[font]
+name = "JetBrains Mono"
+size = 24.0
+
+[theme]
+background = "#000000"
+border = "#333333"
+text = "#ffffff"
