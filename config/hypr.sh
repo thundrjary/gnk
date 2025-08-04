@@ -13,7 +13,10 @@ yay -S --needed --noconfirm \
     hyprland \
     kitty \
     ttf-jetbrains-mono \
-    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
+    hyprshot hyprpicker hyprlock hypridle hyprland-qtutils \
+    mako \
+    slurp satty
 
 # Ensure service directory exists
 mkdir -p "$SERVICE_DIR"
