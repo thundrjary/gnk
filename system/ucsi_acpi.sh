@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Suppresses ucpi_acpi error which is polluting initial login prompt
 set -euo pipefail
 

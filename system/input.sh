@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 yay -S --noconfirm --needed \
     libinput \

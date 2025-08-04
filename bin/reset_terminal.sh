@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Cleanup script to undo kmscon installation and configurations
 # Restores system to original state
 

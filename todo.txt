@@ -1,0 +1,4 @@
+# objective: dial it in; slow down
+
+- screen to remote monitor
+- auto revert to base snapshot before install; maintain user file integrity

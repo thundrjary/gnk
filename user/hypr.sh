@@ -1,5 +1,5 @@
 
-#!/usr/bin/env bash
+#!/bin/bash
 # Minimal Hyprland + Kitty setup
 # Modern Wayland desktop with beautiful terminal
 
