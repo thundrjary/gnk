@@ -11,7 +11,19 @@ catch_errors() {
 trap catch_errors ERR
 
 show_subtext() {
-  echo "$1" | tte --frame-rate ${3:-640} ${2:-wipe}
+  # $1 = text, $2 = color (optional), $3 = style (ignored)
+  color="${2:-cyan}"
+  case "$color" in
+    red)     code=31 ;;
+    green)   code=32 ;;
+    yellow)  code=33 ;;
+    blue)    code=34 ;;
+    magenta) code=35 ;;
+    cyan)    code=36 ;;
+    white)   code=37 ;;
+    *)       code=0  ;; # default
+  esac
+  echo -e "\e[1;${code}m$1\e[0m"
   echo
 }
 
@@ -19,15 +31,15 @@ show_subtext() {
 # ...
 
 # Configuration
-show_subtext "Setting up system configuration [1/2]"
+show_subtext "Setting up system configuration [1/2]" yellow
 source $INSTALL_DIR/system/ucsi_acpi.sh
 
 # Updates
-show_subtext "Updating system packages [2/2]"
+show_subtext "Updating system packages [2/2]" yellow
 sudo updatedb
 sudo pacman -Syu --noconfirm
 
 # Reboot
-show_subtext "Finished. Rebooting now ..."
+show_subtext "Finished. Rebooting now ..." yellow
 sleep 2
 reboot
