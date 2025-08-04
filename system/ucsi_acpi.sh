@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Suppresses ucpi_acpi error which is polluting initial login prompt
 set -euo pipefail
 
 BOOT_ENTRY_DIR="/boot/loader/entries"
