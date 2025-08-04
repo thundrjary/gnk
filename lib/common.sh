@@ -37,6 +37,3 @@ catch_errors() {
   echo -e "\n\e[31mInstallation failed!\e[0m"
   echo "You can retry by running: bash ~/.local/share/gnk/install.sh"
 }
-
-# install.sh and all subscripts:
-source lib/common.sh
