@@ -27,7 +27,7 @@ font-name=JetBrains Mono
 font-size=20
 palette=custom
 
-# Xcode Dark color scheme (16 standard ANSI colors)
+# Xcode Dark color scheme - exact colors from vim theme
 palette-black=65,68,83
 palette-red=255,129,112
 palette-green=120,194,179
@@ -45,7 +45,7 @@ palette-light-magenta=255,122,178
 palette-light-cyan=218,186,255
 palette-light-grey=223,223,224
 
-# Background and foreground
+# Background and foreground - exact base0 and base7
 palette-background=41,42,48
 palette-foreground=223,223,224
 EOF
