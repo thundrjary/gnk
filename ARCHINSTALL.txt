@@ -1,0 +1,9 @@
+# ARCHINSTALL.txt
+
+# partitioning
+- bkrfs
+
+# packages
+- git
+- sudo
+- neovim
