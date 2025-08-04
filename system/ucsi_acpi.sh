@@ -33,7 +33,7 @@ if [[ -d "$BOOT_ENTRY_DIR" ]]; then
 
         if [[ "$current_opts" != "$healed_opts" ]]; then
             echo "Patching: $(basename "$entry")"
-            sed -i "s|^$current_opts\$|$healed_opts|" "$entry"
+            sudo sed -i "s|^$current_opts\$|$healed_opts|" "$entry"
         else
             echo "OK: $(basename "$entry") already patched"
         fi
