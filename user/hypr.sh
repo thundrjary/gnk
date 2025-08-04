@@ -1,9 +1,8 @@
-
 #!/bin/bash
+set -euo pipefail
 # Minimal Hyprland + Kitty setup
 # Modern Wayland desktop with beautiful terminal
 
-set -euo pipefail
 
 yay -S --needed --noconfirm \
     hyprland \

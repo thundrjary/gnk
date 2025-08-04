@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 yay -S --noconfirm --needed \
     fd eza fzf ripgrep \
