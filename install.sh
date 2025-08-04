@@ -33,6 +33,7 @@ source $INSTALL_DIR/preflight/aur.sh
 # Configuration
 show_subtext "Setting up system configuration [1/2]" yellow
 source $INSTALL_DIR/system/ucsi_acpi.sh
+source $INSTALL_DIR/system/detect-keyboard-layout.sh
 
 # Updates
 show_subtext "Updating system packages [2/2]" yellow
