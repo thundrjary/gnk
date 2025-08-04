@@ -6,8 +6,17 @@ set -e
 
 echo "Installing kmscon with JetBrains Mono..."
 
-# Install packages
-sudo pacman -S --needed kmscon ttf-jetbrains-mono
+# Check if yay (AUR helper) is installed
+if ! command -v yay &> /dev/null; then
+    echo "Installing yay AUR helper first..."
+    sudo pacman -S --needed base-devel git
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay && makepkg -si --noconfirm
+    cd - > /dev/null
+fi
+
+# Install packages (kmscon is in AUR)
+yay -S --needed kmscon ttf-jetbrains-mono
 
 # Create kmscon config
 sudo mkdir -p /etc/kmscon
@@ -20,14 +29,14 @@ palette-background=40,40,40
 palette-foreground=235,219,178
 EOF
 
-# Enable kmscon on tty1 (disable getty first if it exists)
+# Enable kmsconvt on tty1 (correct service name)
 if systemctl is-enabled getty@tty1.service &>/dev/null; then
     sudo systemctl disable getty@tty1.service
     echo "✓ Disabled getty@tty1.service"
 fi
 
-sudo systemctl enable kmscon@tty1.service
-echo "✓ Enabled kmscon@tty1.service"
+sudo systemctl enable kmsconvt@tty1.service
+echo "✓ Enabled kmsconvt@tty1.service"
 
 # Set clean login message
 echo "Hello!" | sudo tee /etc/issue > /dev/null
@@ -38,8 +47,8 @@ read -p "Enable auto-login? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     USERNAME=$(whoami)
-    sudo mkdir -p /etc/systemd/system/kmscon@tty1.service.d/
-    sudo tee /etc/systemd/system/kmscon@tty1.service.d/autologin.conf > /dev/null << EOF
+    sudo mkdir -p /etc/systemd/system/kmsconvt@tty1.service.d/
+    sudo tee /etc/systemd/system/kmsconvt@tty1.service.d/autologin.conf > /dev/null << EOF
 [Service]
 ExecStart=
 ExecStart=/usr/bin/kmscon --vt=%i --seats=seat0 --no-switchvt --login -- /bin/login -f $USERNAME
