@@ -39,6 +39,7 @@ source $INSTALL_DIR/system/detect-keyboard-layout.sh
 show_subtext "Setting up user configuration [2/3]" yellow
 source $INSTALL_DIR/config/terminal.sh
 source $INSTALL_DIR/config/shell.sh
+source $INSTALL_DIR/config/hypr.sh
 
 # Updates
 show_subtext "Updating system packages [3/3]" yellow
