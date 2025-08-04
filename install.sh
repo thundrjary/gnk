@@ -2,6 +2,7 @@
 set -euo pipefail
 
 INSTALL_DIR=~/gnk
+cd "$INSTALL_DIR"
 
 catch_errors() {
   echo -e "\n\e[31mInstallation failed!\e[0m"
