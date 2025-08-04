@@ -24,30 +24,33 @@ sudo mkdir -p /etc/kmscon
 sudo tee /etc/kmscon/kmscon.conf > /dev/null << 'EOF'
 font-engine=pango
 font-name=JetBrains Mono
-font-size=20
+font-size=24
 palette=custom
 
-# Xcode Dark color scheme - exact colors from vim theme
-palette-black=65,68,83
-palette-red=255,129,112
-palette-green=120,194,179
-palette-yellow=217,201,124
-palette-blue=78,176,204
-palette-magenta=255,122,178
-palette-cyan=178,129,235
-palette-white=223,223,224
-palette-dark-grey=127,140,152
-palette-light-red=255,129,112
-palette-light-green=172,242,228
-palette-light-yellow=255,161,79
-palette-light-blue=107,223,255
-palette-light-magenta=255,122,178
-palette-light-cyan=218,186,255
-palette-light-grey=223,223,224
+# Modern dark color scheme based on your palette
+# Dark variants (0-7)
+palette-black=24,24,24
+palette-red=250,77,86
+palette-green=66,190,101
+palette-yellow=200,182,112
+palette-blue=80,128,255
+palette-magenta=166,101,208
+palette-cyan=80,176,224
+palette-white=181,189,197
 
-# Background and foreground - exact base0 and base7
-palette-background=41,42,48
-palette-foreground=223,223,224
+# Light variants (8-15)
+palette-dark-grey=82,82,82
+palette-light-red=255,114,121
+palette-light-green=122,192,152
+palette-light-yellow=248,230,160
+palette-light-blue=120,169,255
+palette-light-magenta=163,160,216
+palette-light-cyan=154,198,224
+palette-light-grey=224,224,224
+
+# Background and foreground
+palette-background=8,12,16
+palette-foreground=181,189,197
 EOF
 
 # Enable kmsconvt on tty1 (correct service name)
@@ -64,7 +67,7 @@ echo "Hello!" | sudo tee /etc/issue > /dev/null
 echo "✓ Set clean login message"
 
 echo ""
-echo "✓ kmscon installed with JetBrains Mono 16pt"
-echo "✓ Dark color scheme applied"
+echo "✓ kmscon installed with JetBrains Mono 20pt"
+echo "✓ Modern dark color scheme applied"
 echo "✓ No auto-login configured"
 echo "Reboot to use modern console on tty1!"
