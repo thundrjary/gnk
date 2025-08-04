@@ -5,3 +5,5 @@ yay -S --noconfirm --needed \
     tlp-rdw \
     acpi_call \
     brightnessctl
+
+sudo systemctl enable tlp
