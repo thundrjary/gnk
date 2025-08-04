@@ -27,7 +27,7 @@ font-name=JetBrains Mono
 font-size=20
 palette=custom
 
-# iTerm2 color scheme
+# Xcode Dark color scheme
 palette-black=65,68,83
 palette-red=255,129,112
 palette-green=120,194,179
@@ -43,7 +43,7 @@ palette-light-yellow=255,161,79
 palette-light-blue=107,223,255
 palette-light-magenta=255,122,178
 palette-light-cyan=218,186,255
-palette-white=223,223,224
+palette-bright-white=223,223,224
 
 # Background and foreground
 palette-background=41,42,48
