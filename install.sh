@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+# Check internet connectivity first
+ping -c 1 -W 2 8.8.8.8 &>/dev/null || { echo "No internet connection. Fix network and retry."; exit 1; }
+
 # Import lib/common.sh
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib/common.sh"

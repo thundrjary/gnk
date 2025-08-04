@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ping -c 1 -W 2 8.8.8.8 &>/dev/null || { echo "No internet connection. Fix network and retry."; exit 1; }
+
 sudo pacman -Sy --noconfirm --needed git
 
 # handle repo idempotently
