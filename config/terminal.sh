@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Simple kmscon installation with JetBrains Mono
-# No cleanup, just install and configure
+# Non-interactive, no auto-login
 
 set -e
 
@@ -9,14 +9,15 @@ echo "Installing kmscon with JetBrains Mono..."
 # Check if yay (AUR helper) is installed
 if ! command -v yay &> /dev/null; then
     echo "Installing yay AUR helper first..."
-    sudo pacman -S --needed base-devel git
+    sudo pacman -S --needed --noconfirm base-devel git
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     cd /tmp/yay && makepkg -si --noconfirm
     cd - > /dev/null
+    rm -rf /tmp/yay
 fi
 
 # Install packages (kmscon is in AUR)
-yay -S --needed kmscon ttf-jetbrains-mono
+yay -S --needed --noconfirm kmscon ttf-jetbrains-mono
 
 # Create kmscon config
 sudo mkdir -p /etc/kmscon
@@ -42,21 +43,8 @@ echo "✓ Enabled kmsconvt@tty1.service"
 echo "Hello!" | sudo tee /etc/issue > /dev/null
 echo "✓ Set clean login message"
 
-# Optional auto-login
-read -p "Enable auto-login? (y/n): " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    USERNAME=$(whoami)
-    sudo mkdir -p /etc/systemd/system/kmsconvt@tty1.service.d/
-    sudo tee /etc/systemd/system/kmsconvt@tty1.service.d/autologin.conf > /dev/null << EOF
-[Service]
-ExecStart=
-ExecStart=/usr/bin/kmscon --vt=%i --seats=seat0 --no-switchvt --login -- /bin/login -f $USERNAME
-EOF
-    echo "✓ Auto-login enabled for $USERNAME"
-fi
-
 echo ""
 echo "✓ kmscon installed with JetBrains Mono 16pt"
 echo "✓ Dark color scheme applied"
+echo "✓ No auto-login configured"
 echo "Reboot to use modern console on tty1!"
