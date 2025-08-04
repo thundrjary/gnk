@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Minimal login cleanup script for Arch Linux
 # Makes login message just say "Hello!" with nicer font
 
 set -e
@@ -9,13 +8,13 @@ set -e
 [[ ! -f /etc/vconsole.conf.bak ]] && sudo cp /etc/vconsole.conf /etc/vconsole.conf.bak 2>/dev/null || true
 
 # Set simple login message
-echo "Hello!" | sudo tee /etc/issue > /dev/null
+echo "Hello, Mayla!" | sudo tee /etc/issue > /dev/null
 
-# Set nice console font (Terminus 12x20 - roughly 18px equivalent)
-echo "FONT=ter-120n" | sudo tee /etc/vconsole.conf > /dev/null
+# Set large console font (Terminus 13x32 - much bigger)
+echo "FONT=ter-132n" | sudo tee /etc/vconsole.conf > /dev/null
 
 # Apply font change immediately
 sudo systemctl restart systemd-vconsole-setup 2>/dev/null || true
 
 echo "Login message set to 'Hello!'"
-echo "Console font changed to Terminus 12x20"
+echo "Console font changed to Terminus 13x32 (large)"
