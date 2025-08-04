@@ -2,5 +2,5 @@
 vt = 1
 
 [default_session]
-command = "wlgreet"
-user = "mayla"
+command = "cage -s foot -- /usr/local/bin/login.sh"
+user = "greeter"
