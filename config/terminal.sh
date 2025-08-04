@@ -3,38 +3,45 @@
 
 set -e
 
-# Check available fonts first
-echo "Checking available large fonts..."
-large_fonts=()
-for font in ter-132n ter-132b ter-124n ter-124b sun12x22 iso01-12x22; do
-    if [[ -f "/usr/share/kbd/consolefonts/${font}.psfu.gz" ]] || [[ -f "/usr/share/kbd/consolefonts/${font}.psf.gz" ]]; then
-        large_fonts+=("$font")
-    fi
-done
+echo "Setting up fbterm with JetBrains Mono..."
 
-if [[ ${#large_fonts[@]} -eq 0 ]]; then
-    echo "ERROR: No large fonts found. Install terminus-font package:"
-    echo "sudo pacman -S terminus-font"
-    exit 1
+# Install from AUR (fbterm not in main repos)
+if ! command -v yay &> /dev/null; then
+    echo "Installing yay AUR helper first..."
+    sudo pacman -S --needed base-devel git
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay && makepkg -si --noconfirm
 fi
 
-echo "Found large fonts: ${large_fonts[*]}"
-selected_font="${large_fonts[0]}"
+# Install fbterm and font
+yay -S --needed fbterm ttf-jetbrains-mono
 
-# Backup original files (only if backups don't exist)
-[[ ! -f /etc/issue.bak ]] && sudo cp /etc/issue /etc/issue.bak 2>/dev/null || true
-[[ ! -f /etc/vconsole.conf.bak ]] && sudo cp /etc/vconsole.conf /etc/vconsole.conf.bak 2>/dev/null || true
+# Configure fbterm
+mkdir -p ~/.fbtermrc
+cat > ~/.fbtermrc << 'EOF'
+# fbterm configuration
+font-names=JetBrains Mono
+font-size=16
+color-foreground=7
+color-background=0
+EOF
 
-# Set simple login message
+# Add user to video group (required for fbterm)
+sudo usermod -a -G video $(whoami)
+
+# Create startup script
+cat > ~/.bash_profile << 'EOF'
+# Start fbterm on tty1
+if [[ $TTY == /dev/tty1 ]] && ! pgrep -x fbterm > /dev/null; then
+    fbterm
+fi
+EOF
+
 echo "Hello!" | sudo tee /etc/issue > /dev/null
 
-# Set large console font permanently
-echo "FONT=$selected_font" | sudo tee /etc/vconsole.conf > /dev/null
-
-# Apply font change immediately using setfont
-echo "Applying font $selected_font..."
-sudo setfont "$selected_font"
-
-echo "✓ Login message set to 'Hello!'"
-echo "✓ Console font changed to $selected_font"
-echo "✓ Font applied immediately and will persist after reboot"
+echo "✓ fbterm configured with JetBrains Mono"
+echo "✓ Added user to video group"
+echo "✓ Clean login message set"
+echo ""
+echo "Logout and login to tty1 to use fbterm!"
+echo "Note: fbterm is less maintained than kmscon."
