@@ -11,7 +11,7 @@ BIN_PATH="/usr/bin/Hyprland"
 
 yay -S --needed --noconfirm \
     hyprland \
-    ghostty \
+    kitty \
     ttf-jetbrains-mono \
     xdg-desktop-portal-hyprland
 
