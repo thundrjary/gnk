@@ -19,7 +19,7 @@ sleep 10  # Wait for system to settle
 git clone https://github.com/thundrjary/gnk.git ~/.local/share/gnk
 
 # Ensure scripts are executable
-find ~/.local/share/gnk -type f -name '*.sh' -exec chmoc +x {} +
+find ~/.local/share/gnk -type f -name '*.sh' -exec chmod +x {} +
 
 # Run installation
 bash ~/.local/share/gnk/install.sh

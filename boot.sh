@@ -10,7 +10,7 @@ else
         git clone https://github.com/thundrjary/gnk.git ~/.local/share/gnk >/dev/null
 fi
 
-find ~/.local/share/gnk -type f -name '*.sh' -exec chmoc +x {} +
+find ~/.local/share/gnk -type f -name '*.sh' -exec chmod +x {} +
 
 # run install script
 source ~/.local/share/gnk/install.sh --reset
