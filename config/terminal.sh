@@ -265,17 +265,25 @@ main() {
     # Reset bash_profile safely
     if [[ -f ~/.bash_profile ]]; then
         log_info "Cleaning ~/.bash_profile..."
-        if cp ~/.bash_profile ~/.bash_profile.bak.$(date +%s); then
-            # Remove problematic lines
-            if sed -i '/startx/d; /fbterm/d; /XDG_VTNR/d; /DISPLAY/d' ~/.bash_profile; then
-                sed -i -e :a -e '/^\s*$/N;ba' -e 's/\n*$//' ~/.bash_profile 2>/dev/null || true
-                log_info "Cleaned ~/.bash_profile"
+        
+        # Create simple backup
+        if cp ~/.bash_profile ~/.bash_profile.cleanup.bak 2>/dev/null; then
+            log_info "Created backup of ~/.bash_profile"
+            
+            # Use grep to filter out problematic lines instead of sed -i
+            if grep -v -E '(startx|fbterm|XDG_VTNR|DISPLAY)' ~/.bash_profile > ~/.bash_profile.tmp 2>/dev/null; then
+                if mv ~/.bash_profile.tmp ~/.bash_profile 2>/dev/null; then
+                    log_info "Cleaned ~/.bash_profile successfully"
+                else
+                    log_warn "Could not update ~/.bash_profile, restoring backup"
+                    cp ~/.bash_profile.cleanup.bak ~/.bash_profile 2>/dev/null || true
+                fi
             else
-                log_warn "Could not clean ~/.bash_profile (restored from backup)"
-                cp ~/.bash_profile.bak.$(date +%s) ~/.bash_profile 2>/dev/null || true
+                log_warn "Could not filter ~/.bash_profile, leaving unchanged"
+                rm -f ~/.bash_profile.tmp 2>/dev/null || true
             fi
         else
-            log_warn "Could not backup ~/.bash_profile, skipping cleanup"
+            log_warn "Could not backup ~/.bash_profile, skipping cleanup to avoid data loss"
         fi
     else
         log_info "No ~/.bash_profile found to clean"
