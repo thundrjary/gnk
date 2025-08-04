@@ -30,13 +30,17 @@ show_subtext() {
 # Install preqrequisites
 source $INSTALL_DIR/preflight/aur.sh
 
-# Configuration
-show_subtext "Setting up system configuration [1/2]" yellow
+# System Configuration
+show_subtext "Setting up system configuration [1/3" yellow
 source $INSTALL_DIR/system/ucsi_acpi.sh
 source $INSTALL_DIR/system/detect-keyboard-layout.sh
 
+# User Configuration
+show_subtext "Setting up user configuration [2/3]" yellow
+source $INSTALL_DIR/config/terminal.sh
+
 # Updates
-show_subtext "Updating system packages [2/2]" yellow
+show_subtext "Updating system packages [3/3]" yellow
 sudo pacman -Syu --noconfirm
 
 # Reboot
