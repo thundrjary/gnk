@@ -40,10 +40,11 @@ source $INSTALL_DIR/system/touchscreen.sh
 
 # User Configuration
 show_subtext "Setting up user configuration [2/3]" yellow
-source $INSTALL_DIR/config/terminal.sh
-source $INSTALL_DIR/config/shell.sh
-source $INSTALL_DIR/config/hypr.sh
-source $INSTALL_DIR/config/utilities.sh
+source $INSTALL_DIR/user/terminal.sh
+source $INSTALL_DIR/user/terminal.sh
+source $INSTALL_DIR/user/shell.sh
+source $INSTALL_DIR/user/hypr.sh
+source $INSTALL_DIR/user/utilities.sh
 
 # Updates
 show_subtext "Updating system packages [3/3]" yellow
