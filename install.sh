@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_DIR=~/gnk
+INSTALL_DIR=~/.local/share/gnk
 cd "$INSTALL_DIR"
 
 catch_errors() {
