@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_DIR=~/.local/share/gnk/
+INSTALL_DIR=~/gnk
 
 catch_errors() {
   echo -e "\n\e[31mInstallation failed!\e[0m"
