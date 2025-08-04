@@ -27,30 +27,61 @@ show_subtext() {
   echo
 }
 
-# Install preqrequisites
+# CREATE SNAPSHOT
+show_subtext "Setting up snapshots [1/4" yellow
+source $INSTALL_DIR/system/snapshots.sh
+
+DESC="pre-change-$(date -u +%Y%m%dT%H%M%SZ)"
+
+# .. Ensure snapper exists and is configured
+if ! command -v snapper &>/dev/null; then
+    echo "Error: snapper not found" >&2
+    exit 1
+fi
+
+if [[ ! -f /etc/snapper/configs/root ]]; then
+    echo "Error: snapper config for 'root' not found" >&2
+    exit 1
+fi
+
+# .. Create snapshot and validate
+SNAP_ID=$(sudo snapper -c root create --print-number --description "$DESC") || {
+    echo "Error: snapshot creation failed" >&2
+    exit 1
+}
+
+# .. Confirm snapshot is listed
+if ! sudo snapper -c root list | awk '{print $1}' | grep -qx "$SNAP_ID"; then
+    echo "Error: snapshot $SNAP_ID not found after creation" >&2
+    exit 1
+fi
+
+echo "Snapshot $SNAP_ID ($DESC) created successfully"
+
+# INSTALL PREREQUISITES
 source $INSTALL_DIR/preflight/aur.sh
 
-# System Configuration
-show_subtext "Setting up system configuration [1/3" yellow
+# SYSTEM CONFIGURATION
+show_subtext "Setting up system configuration [2/4" yellow
 source $INSTALL_DIR/system/core.sh
 source $INSTALL_DIR/system/ucsi_acpi.sh
 source $INSTALL_DIR/system/detect-keyboard-layout.sh
 source $INSTALL_DIR/system/input.sh
 source $INSTALL_DIR/system/touchscreen.sh
 
-# User Configuration
-show_subtext "Setting up user configuration [2/3]" yellow
+# USER CONFIGURATION
+show_subtext "Setting up user configuration [3/4]" yellow
 #source $INSTALL_DIR/user/terminal.sh
 source $INSTALL_DIR/user/login.sh
 source $INSTALL_DIR/user/shell.sh
 source $INSTALL_DIR/user/hypr.sh
 source $INSTALL_DIR/user/utilities.sh
 
-# Updates
-show_subtext "Updating system packages [3/3]" yellow
+# UPDATES
+show_subtext "Updating system packages [4/4]" yellow
 sudo pacman -Syu --noconfirm
 
-# Reboot
+# REBOOT
 show_subtext "Finished. Rebooting now ..." yellow
 sleep 2
 reboot
