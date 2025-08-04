@@ -1,9 +1,9 @@
 #!/bin/bash
+source ../lib/common.sh
 
-yay -S --noconfirm --needed \
-    tlp \
-    tlp-rdw \
-    acpi_call \
-    brightnessctl
+install_if_missing tlp
+install_if_missing tlp-rdw
+install_if_missing acpi_call
+install_if_missing brightnessctl
 
 sudo systemctl enable tlp

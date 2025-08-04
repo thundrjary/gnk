@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
+source ../lib/common.sh
 
-yay -S --noconfirm --needed greetd wlgreet
+install_if_missing greetd
+install_if_missing greetd-wlgreet
 
 sudo cp config/greetd/config.toml /etc/greetd/config.toml
 sudo cp config/greetd/wlgreet.toml /etc/greetd/wlgreet.toml

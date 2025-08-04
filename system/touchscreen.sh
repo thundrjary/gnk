@@ -1,8 +1,8 @@
 #!/bin/bash
+source ../lib/common.sh
 
-yay -S --noconfirm --needed \
-    wvkbd \
-    hyprgrass \
-    touchegg
+install_if_missing wvkbd
+install_if_missing hyprgrass
+install_if_missing touchegg
 
 sudo systemctl enable touchegg

@@ -1,4 +1,4 @@
 #!/bin/bash
+source ../lib/common.sh
 
-yay -S --noconfirm --needed fish
-sudo chsh -s /usr/bin/bash mayla
+install_if_missing fish

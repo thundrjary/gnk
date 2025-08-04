@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+source ../lib/common.sh
 
 # Verify btrfs in use
 if ! findmnt -n -o FSTYPE / | grep -q btrfs; then
@@ -9,7 +10,7 @@ fi
 
 # Install snapper if not present
 if ! command -v snapper &>/dev/null; then
-    yay -S --noconfirm --needed snapper
+    install_if_missing snapper
 fi
 
 # Create config only if it doesn't exist

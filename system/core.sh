@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
+source ../lib/common.sh
 
-yay -S --noconfirm --needed \
-    linux-firmware \
-    intel-ucode \
-    intel-media-driver \
-    mesa
+install_if_missing linux-firmware
+install_if_missing intel-ucode
+install_if_missing intel-media-driver
+install_if_missing mesa
