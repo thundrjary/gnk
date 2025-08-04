@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-yay -S --needed fish
+yay -S --noconfirm --needed fish
 sudo chsh -s /usr/bin/bash mayla
