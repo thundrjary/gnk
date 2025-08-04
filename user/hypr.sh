@@ -2,7 +2,8 @@
 # Minimal Hyprland + Kitty setup
 # Modern Wayland desktop with beautiful terminal
 set -euo pipefail
-source ../lib/common.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/common.sh"
 
 install_if_missing hyprland
 install_if_missing kitty

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
-source ../lib/common.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/common.sh"
 
 # Verify btrfs in use
 if ! findmnt -n -o FSTYPE / | grep -q btrfs; then

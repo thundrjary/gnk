@@ -68,7 +68,7 @@ source $INSTALL_DIR/system/core.sh
 source $INSTALL_DIR/system/ucsi_acpi.sh
 source $INSTALL_DIR/system/detect-keyboard-layout.sh
 source $INSTALL_DIR/system/input.sh
-source $INSTALL_DIR/system/touchscreen.sh
+source $INSTALL_DIR/system/power.sh
 
 # USER CONFIGURATION
 show_subtext "Setting up user configuration [3/4]" yellow

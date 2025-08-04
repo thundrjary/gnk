@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
-source ../lib/common.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/common.sh"
 
 install_if_missing greetd
 install_if_missing greetd-wlgreet
