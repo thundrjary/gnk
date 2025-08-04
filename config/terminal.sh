@@ -83,6 +83,11 @@ check_prerequisites() {
         exit 1
     fi
     
+    # Check if timeout command is available
+    if ! command -v timeout &>/dev/null; then
+        log_warn "timeout command not available, some operations may hang if there are permission issues"
+    fi
+    
     log_info "Prerequisites check passed"
 }
 
@@ -166,6 +171,9 @@ main() {
     
     log_info "Starting cleanup of previous terminal modifications..."
     
+    # Add a small delay to ensure output is visible
+    sleep 0.5
+    
     # Cleanup section with better error handling
     safe_restore_file "/etc/issue" || log_warn "Could not restore /etc/issue"
     safe_restore_file "/etc/vconsole.conf" || log_warn "Could not restore /etc/vconsole.conf"
@@ -179,30 +187,107 @@ main() {
         fi
     fi
     
-    # Clean up user configs (these should be safe to remove)
-    rm -rf ~/.config/alacritty ~/.config/i3 ~/.xinitrc 2>/dev/null || true
-    log_info "Removed Alacritty/X11 configurations"
+    # Clean up user configs (with individual handling)
+    log_info "Checking for Alacritty/X11 configurations to remove..."
+    local configs_removed=false
+    
+    if [[ -d ~/.config/alacritty ]]; then
+        log_info "Removing ~/.config/alacritty..."
+        if command -v timeout &>/dev/null; then
+            if timeout 10 rm -rf ~/.config/alacritty 2>/dev/null; then
+                configs_removed=true
+            else
+                log_warn "Could not remove ~/.config/alacritty (timeout or permission issue)"
+            fi
+        else
+            if rm -rf ~/.config/alacritty 2>/dev/null; then
+                configs_removed=true
+            else
+                log_warn "Could not remove ~/.config/alacritty (permission issue)"
+            fi
+        fi
+    fi
+    
+    if [[ -d ~/.config/i3 ]]; then
+        log_info "Removing ~/.config/i3..."
+        if command -v timeout &>/dev/null; then
+            if timeout 10 rm -rf ~/.config/i3 2>/dev/null; then
+                configs_removed=true
+            else
+                log_warn "Could not remove ~/.config/i3 (timeout or permission issue)"
+            fi
+        else
+            if rm -rf ~/.config/i3 2>/dev/null; then
+                configs_removed=true
+            else
+                log_warn "Could not remove ~/.config/i3 (permission issue)"
+            fi
+        fi
+    fi
+    
+    if [[ -f ~/.xinitrc ]]; then
+        log_info "Removing ~/.xinitrc..."
+        if rm -f ~/.xinitrc 2>/dev/null; then
+            configs_removed=true
+        else
+            log_warn "Could not remove ~/.xinitrc (permission issue)"
+        fi
+    fi
+    
+    if [[ "$configs_removed" == true ]]; then
+        log_info "Completed Alacritty/X11 configuration cleanup"
+    else
+        log_info "No Alacritty/X11 configurations found to remove"
+    fi
     
     # Clean up fbterm
-    rm -rf ~/.fbtermrc 2>/dev/null || true
-    if sudo pacman -R fbterm --noconfirm 2>/dev/null; then
-        log_info "Removed fbterm package"
+    local fbterm_removed=false
+    
+    if [[ -f ~/.fbtermrc ]]; then
+        rm -f ~/.fbtermrc 2>/dev/null && fbterm_removed=true
+    elif [[ -d ~/.fbtermrc ]]; then
+        rm -rf ~/.fbtermrc 2>/dev/null && fbterm_removed=true
+    fi
+    
+    if command -v fbterm &> /dev/null; then
+        if sudo pacman -R fbterm --noconfirm 2>/dev/null; then
+            log_info "Removed fbterm package"
+            fbterm_removed=true
+        else
+            log_warn "Could not remove fbterm package (may not be installed)"
+        fi
+    fi
+    
+    if [[ "$fbterm_removed" == true ]]; then
+        log_info "Cleaned up fbterm configuration"
     fi
     
     # Reset bash_profile safely
     if [[ -f ~/.bash_profile ]]; then
-        if cp ~/.bash_profile ~/.bash_profile.bak; then
+        log_info "Cleaning ~/.bash_profile..."
+        if cp ~/.bash_profile ~/.bash_profile.bak.$(date +%s); then
             # Remove problematic lines
-            sed -i '/startx/d; /fbterm/d; /XDG_VTNR/d; /DISPLAY/d' ~/.bash_profile
-            sed -i -e :a -e '/^\s*$/N;ba' -e 's/\n*$//' ~/.bash_profile
-            log_info "Cleaned ~/.bash_profile"
+            if sed -i '/startx/d; /fbterm/d; /XDG_VTNR/d; /DISPLAY/d' ~/.bash_profile; then
+                sed -i -e :a -e '/^\s*$/N;ba' -e 's/\n*$//' ~/.bash_profile 2>/dev/null || true
+                log_info "Cleaned ~/.bash_profile"
+            else
+                log_warn "Could not clean ~/.bash_profile (restored from backup)"
+                cp ~/.bash_profile.bak.$(date +%s) ~/.bash_profile 2>/dev/null || true
+            fi
         else
-            log_warn "Could not backup ~/.bash_profile"
+            log_warn "Could not backup ~/.bash_profile, skipping cleanup"
         fi
+    else
+        log_info "No ~/.bash_profile found to clean"
     fi
     
     # Reset font safely
-    sudo setfont 2>/dev/null || true
+    log_info "Resetting console font..."
+    if sudo setfont 2>/dev/null; then
+        log_info "Console font reset to default"
+    else
+        log_info "Console font reset (no change needed)"
+    fi
     
     # Check if getty@tty1 is enabled (for rollback purposes)
     if systemctl is-enabled getty@tty1.service &>/dev/null; then
