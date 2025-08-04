@@ -3,3 +3,4 @@
 yay -S --noconfirm --needed greetd greetd-tuigreet
 
 sudo cp config/greetd/config.toml /etc/greetd/config.toml
+sudo systemctl enable greetd
