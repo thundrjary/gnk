@@ -32,14 +32,18 @@ source $INSTALL_DIR/preflight/aur.sh
 
 # System Configuration
 show_subtext "Setting up system configuration [1/3" yellow
+source $INSTALL_DIR/system/core.sh
 source $INSTALL_DIR/system/ucsi_acpi.sh
 source $INSTALL_DIR/system/detect-keyboard-layout.sh
+source $INSTALL_DIR/system/input.sh
+source $INSTALL_DIR/system/touchscreen.sh
 
 # User Configuration
 show_subtext "Setting up user configuration [2/3]" yellow
 source $INSTALL_DIR/config/terminal.sh
 source $INSTALL_DIR/config/shell.sh
 source $INSTALL_DIR/config/hypr.sh
+source $INSTALL_DIR/config/utilities.sh
 
 # Updates
 show_subtext "Updating system packages [3/3]" yellow
