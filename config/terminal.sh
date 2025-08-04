@@ -50,7 +50,7 @@ palette-light-grey=224,224,224
 
 # Background and foreground
 palette-background=8,12,16
-palette-foreground=181,189,197
+palette-foreground=224,224,224
 EOF
 
 # Enable kmsconvt on tty1 (correct service name)
