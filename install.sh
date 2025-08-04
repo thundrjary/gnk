@@ -28,7 +28,7 @@ show_subtext() {
 }
 
 # Install preqrequisites
-# ...
+source $INSTALL_DIR/preflight/aur.sh
 
 # Configuration
 show_subtext "Setting up system configuration [1/2]" yellow
