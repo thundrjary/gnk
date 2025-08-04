@@ -85,4 +85,4 @@ sudo pacman -Syu --noconfirm
 # REBOOT
 show_subtext "Finished. Rebooting now ..." yellow
 sleep 2
-reboot
+sudo reboot
