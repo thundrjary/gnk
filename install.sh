@@ -36,7 +36,6 @@ source $INSTALL_DIR/system/ucsi_acpi.sh
 
 # Updates
 show_subtext "Updating system packages [2/2]" yellow
-sudo updatedb
 sudo pacman -Syu --noconfirm
 
 # Reboot
