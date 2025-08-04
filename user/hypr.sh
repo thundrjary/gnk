@@ -5,10 +5,6 @@
 
 set -euo pipefail
 
-SERVICE_DIR="$HOME/.config/systemd/user"
-SERVICE_FILE="$SERVICE_DIR/hyprland.service"
-BIN_PATH="/usr/bin/Hyprland"
-
 yay -S --needed --noconfirm \
     hyprland \
     kitty \
