@@ -2,4 +2,4 @@
 # Simple kmscon installation with JetBrains Mono
 # Non-interactive, no auto-login
 
-exit 0
+echo ""
