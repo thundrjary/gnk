@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Makes login message just say "Hello!" with nicer font
-
 set -e
 
 echo "Setting up fbterm with JetBrains Mono..."
@@ -17,7 +16,6 @@ fi
 yay -S --needed fbterm ttf-jetbrains-mono
 
 # Configure fbterm
-mkdir -p ~/.fbtermrc
 cat > ~/.fbtermrc << 'EOF'
 # fbterm configuration
 font-names=JetBrains Mono
