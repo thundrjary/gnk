@@ -24,10 +24,30 @@ sudo mkdir -p /etc/kmscon
 sudo tee /etc/kmscon/kmscon.conf > /dev/null << 'EOF'
 font-engine=pango
 font-name=JetBrains Mono
-font-size=16
+font-size=20
 palette=custom
-palette-background=40,40,40
-palette-foreground=235,219,178
+
+# iTerm2 color scheme
+palette-black=65,68,83
+palette-red=255,129,112
+palette-green=120,194,179
+palette-yellow=217,201,124
+palette-blue=78,176,204
+palette-magenta=255,122,178
+palette-cyan=178,129,235
+palette-white=223,223,224
+palette-dark-grey=127,140,152
+palette-light-red=255,129,112
+palette-light-green=172,242,228
+palette-light-yellow=255,161,79
+palette-light-blue=107,223,255
+palette-light-magenta=255,122,178
+palette-light-cyan=218,186,255
+palette-white=223,223,224
+
+# Background and foreground
+palette-background=41,42,48
+palette-foreground=223,223,224
 EOF
 
 # Enable kmsconvt on tty1 (correct service name)
