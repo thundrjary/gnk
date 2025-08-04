@@ -2,3 +2,4 @@
 
 - screen to remote monitor
 - auto revert to base snapshot before install; maintain user file integrity
+= file hash files for "Nothing to do" state to happen quickly
