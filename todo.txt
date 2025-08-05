@@ -2,4 +2,62 @@
 
 - screen to remote monitor
 - auto revert to base snapshot before install; maintain user file integrity
-= file hash files for "Nothing to do" state to happen quickly
+- file hash files for "Nothing to do" state to happen quickly
+
+
+**Critical System Foundation (Do First):**
+- Update system and enable multilib repository
+	- latest packages, security updates
+	- setup multilib in /etc/pacman.conf, for 32-bit packages; gaming/wine/propietary soft
+	- refresh package dabases (pacman -Sy)
+
+- Install and configure bootloader properly (if not done during install)
+	- verify bootloader is actually installed to the ESP
+	- check /boot/loader/entries or /boot/grub/grub.cfg exists and correct
+	- test boot without install media
+	- configure boot timeout and default entries
+- Set up network connectivity (NetworkManager/systemd-networkd)
+	- networkmanager/systemd-networkd
+	- test wifi & wired
+	- configuer dns resolution
+- Configure users, sudo, and basic security
+	- non-root user (useradd -m -G wheel username)
+	- user password
+	- visudo with wheel
+	- sudo test
+	- ssh, disable root login
+- Install essential firmware packages (linux-firmware, any vendor-specific firmware)
+
+**Hardware Detection & Drivers:**
+- Graphics drivers (intel-media-driver, mesa, nvidia, amdgpu)
+- Audio system (pipewire-pulse, wireplumber, alsa-utils)
+- Bluetooth stack (bluez, bluez-utils)
+- Input devices (libinput, any special keyboard/mouse drivers)
+- Printer support if needed (cups)
+
+**Power & Thermal Management:**
+- Power management (tlp, powertop, or laptop-mode-tools)
+- CPU frequency scaling (cpupower)
+- Thermal monitoring (lm-sensors, thermald)
+- Suspend/hibernate configuration
+
+**Hardware Verification Testing:**
+- Test all USB ports and devices
+- Verify display outputs and resolutions
+- Check audio input/output on all jacks
+- Test wireless connectivity strength
+- Verify suspend/resume cycles
+- Check thermal throttling under load
+
+**System Monitoring Setup:**
+- Install hardware monitoring tools (htop, iotop, lm-sensors)
+- Set up logging for hardware issues (journalctl configuration)
+- Install stress testing tools (stress, s-tui)
+
+**Only Then Move To:**
+- Desktop environment/window manager
+- Application installation
+- Dotfiles and aesthetics
+- Custom scripts and automation
+
+The key is getting hardware working reliably before layering on complexity. Each step should be tested before moving to the next.
