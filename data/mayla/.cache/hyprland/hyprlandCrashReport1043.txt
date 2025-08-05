@@ -1,0 +1,161 @@
+--------------------------------------------
+   Hyprland Crash Report
+--------------------------------------------
+This was an accident, I swear!
+
+Hyprland received signal 6(ABRT)
+Version: 4e242d086e20b32951fdc0ebcbfb4d41b5be8dcc
+Tag: v0.50.1
+Date: Sat Jul 19 21:37:06 2025
+Flags:
+
+System info:
+	System name: Linux
+	Node name: lollypop
+	Release: 6.15.9-arch1-1
+	Version: #1 SMP PREEMPT_DYNAMIC Sat, 02 Aug 2025 01:20:06 +0000
+
+GPU:
+	00:02.0 VGA compatible controller [0300]: Intel Corporation UHD Graphics 615 [8086:591c] (rev 02) (prog-if 00 [VGA controller])
+00:13.0 Non-VGA unclassified device [0000]: Intel Corporation Sunrise Point-LP Integrated Sensor Hub [8086:9d35] (rev 21)
+
+
+os-release:
+	NAME="Arch Linux"
+	PRETTY_NAME="Arch Linux"
+	ID=arch
+	BUILD_ID=rolling
+	ANSI_COLOR="38;2;23;147;209"
+	HOME_URL="https://archlinux.org/"
+	DOCUMENTATION_URL="https://wiki.archlinux.org/"
+	SUPPORT_URL="https://bbs.archlinux.org/"
+	BUG_REPORT_URL="https://gitlab.archlinux.org/groups/archlinux/-/issues"
+	PRIVACY_POLICY_URL="https://terms.archlinux.org/docs/privacy-policy/"
+	LOGO=archlinux-logo
+Backtrace:
+	# | /usr/bin/Hyprland(_Z12getBacktracev+0x61) [0x55b13887f441]
+		getBacktrace()
+		??:?
+	#1 | /usr/bin/Hyprland(_ZN14NCrashReporter18createAndSaveCrashEi+0x1187) [0x55b1387d76d7]
+		NCrashReporter::createAndSaveCrash(int)
+		??:?
+	#2 | /usr/bin/Hyprland(+0x22aa68) [0x55b138747a68]
+		CCompositor::getMonitorFromCursor()
+		??:?
+	#3 | /usr/lib/libc.so.6(+0x3e540) [0x7f39f143e540]
+		??
+		??:0
+	#4 | /usr/lib/libc.so.6(+0x9894c) [0x7f39f149894c]
+		??
+		??:0
+	#5 | /usr/lib/libc.so.6(gsignal+0x20) [0x7f39f143e410]
+		??
+		??:0
+	#6 | /usr/lib/libc.so.6(abort+0x26) [0x7f39f142557a]
+		??
+		??:0
+	#7 | /usr/lib/libstdc++.so.6(+0x97bf6) [0x7f39f1897bf6]
+		??
+		??:0
+	#8 | /usr/lib/libstdc++.so.6(+0xb1eba) [0x7f39f18b1eba]
+		??
+		??:0
+	#9 | /usr/lib/libstdc++.so.6(_ZSt10unexpectedv+0) [0x7f39f18975d9]
+		??
+		??:0
+	#1 | /usr/lib/libstdc++.so.6(+0xb2176) [0x7f39f18b2176]
+		??
+		??:0
+	#11 | /usr/bin/Hyprland(+0x11136e) [0x55b13862e36e]
+		??
+		??:0
+	#12 | /usr/bin/Hyprland(_ZN11CCompositor10initServerENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi+0x14f9) [0x55b13874e039]
+		CCompositor::initServer(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int)
+		??:?
+	#13 | /usr/bin/Hyprland(main+0x875) [0x55b1386eacc5]
+		main
+		??:?
+	#14 | /usr/lib/libc.so.6(+0x27675) [0x7f39f1427675]
+		??
+		??:0
+	#15 | /usr/lib/libc.so.6(__libc_start_main+0x89) [0x7f39f1427729]
+		??
+		??:0
+	#16 | /usr/bin/Hyprland(_start+0x25) [0x55b138742595]
+		_start
+		??:?
+
+
+Log tail:
+[LOG] Runtime directory: /run/user/1001/hypr/4e242d086e20b32951fdc0ebcbfb4d41b5be8dcc_1754349759_1324613241
+[LOG] Hyprland PID: 1043
+[LOG] ===== SYSTEM INFO: =====
+[LOG] System name: Linux
+[LOG] Node name: lollypop
+[LOG] Release: 6.15.9-arch1-1
+[LOG] Version: #1 SMP PREEMPT_DYNAMIC Sat, 02 Aug 2025 01:20:06 +0000
+
+
+[LOG] GPU information:
+00:02.0 VGA compatible controller [0300]: Intel Corporation UHD Graphics 615 [8086:591c] (rev 02) (prog-if 00 [VGA controller])
+00:13.0 Non-VGA unclassified device [0000]: Intel Corporation Sunrise Point-LP Integrated Sensor Hub [8086:9d35] (rev 21)
+
+
+[LOG] os-release:
+NAME="Arch Linux"
+PRETTY_NAME="Arch Linux"
+ID=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://archlinux.org/"
+DOCUMENTATION_URL="https://wiki.archlinux.org/"
+SUPPORT_URL="https://bbs.archlinux.org/"
+BUG_REPORT_URL="https://gitlab.archlinux.org/groups/archlinux/-/issues"
+PRIVACY_POLICY_URL="https://terms.archlinux.org/docs/privacy-policy/"
+LOGO=archlinux-logo
+[LOG] ========================
+
+
+
+[INFO] If you are crashing, or encounter any bugs, please consult https://wiki.hypr.land/Crashes-and-Bugs/
+
+
+[LOG] 
+Current splash: h
+
+
+[LOG] Old rlimit: soft -> 1024, hard -> 524288
+[LOG] New rlimit: soft -> 524288, hard -> 524288
+[LOG] Creating the EventLoopManager!
+[LOG] Creating the HookSystem!
+[LOG] Creating the KeybindManager!
+[LOG] Creating the AnimationManager!
+[LOG] Creating the DynamicPermissionManager!
+[LOG] Creating the ConfigManager!
+[LOG] Using config: /home/mayla/.config/hypr/hyprland.conf
+[INFO] !!!!HEY YOU, YES YOU!!!!: further logs to stdout / logfile are disabled by default. BEFORE SENDING THIS LOG, ENABLE THEM. Use debug:disable_logs = false to do so: https://wiki.hypr.land/Configuring/Variables/#debug
+[LOG] Creating the CHyprError!
+[LOG] Creating the LayoutManager!
+[LOG] Creating the TokenManager!
+[LOG] [hookSystem] New hook event registered: preConfigReload
+[LOG] Using config: /home/mayla/.config/hypr/hyprland.conf
+[LOG] CWindowRule: direct prop rule found, rewritten nofocus -> prop nofocus
+[LOG] Disabling stdout logs! Check the log for further logs.
+[LOG] Creating the PointerManager!
+[LOG] Creating the EventManager!
+[LOG] [AQ] Creating an Aquamarine backend!
+[LOG] [AQ] [libseat] [libseat/backend/seatd.c:64] Could not connect to socket /run/seatd.sock: No such file or directory
+[LOG] [AQ] [libseat] [libseat/libseat.c:76] Backend 'seatd' failed to open seat, skipping
+[LOG] [AQ] [libseat] [libseat/libseat.c:76] Backend 'logind' failed to open seat, skipping
+[ERR] [AQ] [libseat] [libseat/libseat.c:79] No backend was able to open a seat
+[ERR] [AQ] libseat: failed to open a seat
+[ERR] [AQ] Failed to open a session
+[ERR] [AQ] DRM Backend failed
+[LOG] [AQ] Starting the Aquamarine backend!
+[LOG] [AQ] Starting the Wayland backend!
+[ERR] [AQ] Wayland backend cannot start: wl_display_connect failed (is a wayland compositor running?)
+[ERR] [AQ] Requested backend (wayland) could not start, enabling fallbacks
+[ERR] [AQ] Implementation wayland failed, erasing.
+[CRITICAL] [AQ] Cannot open backend: no allocator available
+[CRITICAL] m_pAqBackend couldn't start! This usually means aquamarine could not find a GPU or encountered some issues. Make sure you're running either on a tty or on a Wayland session, NOT an X11 one.
+[CRITICAL] Critical error thrown: CBackend::create() failed!

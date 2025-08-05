@@ -1,0 +1,42 @@
+jd snap create "description"
+jd snap rollback
+jd snap list
+jd snap test "./script.sh"
+
+jd config deploy graphics
+jd config test audio
+jd config rollback-to baseline
+
+jd sys health-check
+jd sys hardware-test
+jd sys boot-test
+```
+
+**Subcommand Categories:**
+- `jd snap` - All snapshot operations
+- `jd config` - System configuration management  
+- `jd sys` - System validation and testing
+- `jd git` - Git workflow integration
+- `jd vm` - If you add VM tooling later
+
+**Development Workflow Integration:**
+```bash
+jd dev start graphics           # Create baseline, checkout branch
+jd dev test ./install-gpu.sh    # Snapshot, test, prompt keep/rollback
+jd dev commit "working nvidia"  # Git commit + success snapshot
+jd dev reset                    # Rollback + git reset
+```
+
+**Smart Defaults:**
+```bash
+jd                              # Show status (recent snapshots, git branch, system health)
+jd test                         # Quick system validation
+jd save                         # Smart snapshot with auto-description
+jd back                         # Safe rollback with confirmation
+```
+
+**Configuration:**
+- `~/.config/jd/config` - Your preferences and defaults
+- Plugin system for adding new tools
+- Tab completion for all subcommands
+

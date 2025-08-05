@@ -1,0 +1,10 @@
+#!/bin/bash
+filename="$(date +%Y-%m-%d).txt"
+echo -e "\e[1;33mEnter text below. Press \e[1;31mCtrl+D\e[1;33m to save and exit.\e[0m"
+cat > "$filename"
+saved_date=$(date +"%Y-%m-%d %H:%M:%S")
+echo -e "\e[38;5;238mText saved to $filename on $saved_date\e[0m"
+echo -e "\e[1;34mTo view your notes later, use:\e[0m \e[1;36mcat $filename\e[0m"
+read -rp $'\e[38;5;238mPress \e[1;33mEnter\e[38;5;238m to return to the terminal...\e[0m'
+clear
+

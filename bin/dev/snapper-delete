@@ -1,0 +1,2 @@
+#!/bin/bash
+snapper delete $1

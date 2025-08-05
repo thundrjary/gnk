@@ -1,0 +1,2 @@
+#!/bin/bash
+snapper status "$1".."$2"

@@ -1,0 +1,2 @@
+#!/bin/bash
+snapper create-config /home

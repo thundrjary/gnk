@@ -1,0 +1,272 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+# jd - Personal development tooling wrapper
+# Usage: jd <category> <command> [args...]
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_DIR="${HOME}/.config/jd"
+CONFIG_FILE="${CONFIG_DIR}/config"
+
+# Create config directory if it doesn't exist
+mkdir -p "$CONFIG_DIR"
+
+# Default configuration
+DEFAULT_SNAP_PREFIX="jd"
+DEFAULT_AUTO_CLEAN="true"
+
+# Load configuration
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then
+        source "$CONFIG_FILE"
+    fi
+}
+
+# Utility functions
+log_info() {
+    echo -e "\033[32m[INFO]\033[0m $*" >&2
+}
+
+log_warn() {
+    echo -e "\033[33m[WARN]\033[0m $*" >&2
+}
+
+log_error() {
+    echo -e "\033[31m[ERROR]\033[0m $*" >&2
+}
+
+confirm() {
+    local prompt="${1:-Are you sure?}"
+    read -p "$prompt (y/N): " -n 1 -r
+    echo
+    [[ $REPLY =~ ^[Yy]$ ]]
+}
+
+# Snapshot management
+snap_create() {
+    local desc="${1:-manual-$(date +%H%M%S)}"
+    local full_desc="${DEFAULT_SNAP_PREFIX}-${desc}"
+    
+    log_info "Creating snapshot: $full_desc"
+    sudo snapper create --description "$full_desc"
+    
+    # List recent snapshots
+    snap_list | tail -5
+}
+
+snap_list() {
+    sudo snapper list | grep -E "(${DEFAULT_SNAP_PREFIX}|Type|Number)" || true
+}
+
+snap_rollback() {
+    log_warn "This will rollback to the previous snapshot and reboot"
+    if confirm "Continue with rollback?"; then
+        sudo snapper rollback
+        log_info "Rebooting in 5 seconds... (Ctrl+C to cancel)"
+        sleep 5
+        sudo reboot
+    fi
+}
+
+snap_test() {
+    local script="$1"
+    if [[ ! -f "$script" ]]; then
+        log_error "Script not found: $script"
+        return 1
+    fi
+    
+    snap_create "before-test-$(basename "$script")"
+    
+    log_info "Running: $script"
+    if "$script"; then
+        log_info "Script completed successfully"
+        if confirm "Keep changes?"; then
+            snap_create "success-$(basename "$script")"
+            log_info "Changes saved with success snapshot"
+        else
+            snap_rollback
+        fi
+    else
+        log_error "Script failed"
+        if confirm "Rollback due to failure?"; then
+            snap_rollback
+        fi
+    fi
+}
+
+snap_clean() {
+    log_info "Cleaning old development snapshots..."
+    # Delete snapshots older than 7 days with jd prefix
+    sudo snapper list | awk "/^[0-9].*${DEFAULT_SNAP_PREFIX}/ {print \$1}" | while read -r num; do
+        if [[ -n "$num" ]]; then
+            log_info "Checking snapshot $num for cleanup..."
+            # Add age-based cleanup logic here
+        fi
+    done
+}
+
+# Configuration management
+config_deploy() {
+    local area="$1"
+    local script_path="${SCRIPT_DIR}/config/deploy-${area}.sh"
+    
+    if [[ ! -f "$script_path" ]]; then
+        log_error "No deployment script found for: $area"
+        log_info "Expected: $script_path"
+        return 1
+    fi
+    
+    snap_test "$script_path"
+}
+
+config_test() {
+    local area="$1"
+    local test_path="${SCRIPT_DIR}/config/test-${area}.sh"
+    
+    if [[ ! -f "$test_path" ]]; then
+        log_error "No test script found for: $area"
+        log_info "Expected: $test_path"
+        return 1
+    fi
+    
+    log_info "Testing $area configuration..."
+    "$test_path"
+}
+
+# System utilities
+sys_health() {
+    log_info "System health check:"
+    echo "=== Recent snapshots ==="
+    snap_list | tail -3
+    
+    echo -e "\n=== Disk usage ==="
+    df -h / | tail -1
+    
+    echo -e "\n=== Failed services ==="
+    systemctl --failed --no-pager || echo "No failed services"
+    
+    echo -e "\n=== Memory usage ==="
+    free -h | grep -E "(Mem|Swap)"
+}
+
+sys_hardware_test() {
+    log_info "Running hardware tests..."
+    
+    echo "=== Audio test ==="
+    aplay /usr/share/sounds/alsa/Front_Left.wav 2>/dev/null || echo "Audio test failed"
+    
+    echo -e "\n=== Graphics test ==="
+    glxinfo | grep "direct rendering" || echo "No GLX info available"
+    
+    echo -e "\n=== Network test ==="
+    ping -c 1 8.8.8.8 >/dev/null && echo "Network: OK" || echo "Network: FAIL"
+}
+
+# Main command dispatcher
+show_help() {
+    cat << EOF
+jd - Personal development tooling wrapper
+
+Usage: jd <category> <command> [args...]
+
+Categories:
+  snap     Snapshot management
+  config   Configuration deployment
+  sys      System utilities
+
+Commands:
+  jd snap create [description]     Create snapshot
+  jd snap list                     List snapshots  
+  jd snap rollback                 Rollback and reboot
+  jd snap test <script>            Test script with auto-rollback
+  jd snap clean                    Clean old snapshots
+
+  jd config deploy <area>          Deploy configuration area
+  jd config test <area>            Test configuration area
+
+  jd sys health                    System health check
+  jd sys hardware                  Hardware functionality test
+
+Quick commands:
+  jd                              Show system status
+  jd save [desc]                  Quick snapshot
+  jd back                         Quick rollback
+
+EOF
+}
+
+show_status() {
+    log_info "JD Development Environment Status"
+    echo "=== Recent Snapshots ==="
+    snap_list | tail -3
+    
+    echo -e "\n=== Git Status ==="
+    if git rev-parse --git-dir >/dev/null 2>&1; then
+        git status --porcelain | head -5
+        echo "Branch: $(git branch --show-current)"
+    else
+        echo "Not in a git repository"
+    fi
+    
+    echo -e "\n=== System ==="
+    uptime
+}
+
+# Main execution
+main() {
+    load_config
+    
+    case "${1:-status}" in
+        # Quick commands
+        ""|status)
+            show_status
+            ;;
+        save)
+            snap_create "${2:-quick-save}"
+            ;;
+        back)
+            snap_rollback
+            ;;
+        
+        # Category commands
+        snap)
+            case "${2:-}" in
+                create) snap_create "${3:-}" ;;
+                list) snap_list ;;
+                rollback) snap_rollback ;;
+                test) snap_test "${3:?Script required}" ;;
+                clean) snap_clean ;;
+                *) log_error "Unknown snap command: ${2:-}"; show_help ;;
+            esac
+            ;;
+        
+        config)
+            case "${2:-}" in
+                deploy) config_deploy "${3:?Area required}" ;;
+                test) config_test "${3:?Area required}" ;;
+                *) log_error "Unknown config command: ${2:-}"; show_help ;;
+            esac
+            ;;
+        
+        sys)
+            case "${2:-}" in
+                health) sys_health ;;
+                hardware) sys_hardware_test ;;
+                *) log_error "Unknown sys command: ${2:-}"; show_help ;;
+            esac
+            ;;
+        
+        help|--help|-h)
+            show_help
+            ;;
+        
+        *)
+            log_error "Unknown category: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+}
+
+# Execute main function with all arguments
+main "$@"

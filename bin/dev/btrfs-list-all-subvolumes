@@ -1,0 +1,2 @@
+#!/bin/bash
+btrfs subvolume list /
