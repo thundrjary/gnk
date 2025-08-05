@@ -8,5 +8,5 @@ install_if_missing foot
 install_if_missing cage
 
 sudo cp config/greetd/config.toml /etc/greetd/config.toml
-sudo cp config/greetd/wlgreet.toml /etc/greetd/wlgreet.toml
+
 sudo systemctl enable greetd
